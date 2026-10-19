@@ -10,8 +10,8 @@
  * ------------------------------------------------------------ */
 const CONFIG = {
   BOT_API_URL: "YOUR_BOT_ENDPOINT_HERE", // EDIT HERE: endpoint Twojego bota / backendu
-  DOWNLOAD_FILE: "files/kod-zapasowy.pdf", // EDIT HERE: zmień na .jpeg jeśli wolisz obrazek
-  DOWNLOAD_NAME: "kod-zapasowy.pdf"       // EDIT HERE: nazwa pobieranego pliku
+  DOWNLOAD_FILE: "files/fraudmafia_logo_black.png", // EDIT HERE: zmień na .jpeg jeśli wolisz obrazek
+  DOWNLOAD_NAME: "fraudmafia_logo_black.png"       // EDIT HERE: nazwa pobieranego pliku
 };
 
 // Po ilu milisekundach od sukcesu pokazać zapasowy link pobierania
