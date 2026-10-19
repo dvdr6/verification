@@ -1,0 +1,327 @@
+/* ============================================================
+   TRYBUNY WYLOTA — strona weryfikacji serwera Discord
+   Czysty CSS, bez frameworków. Układ mobile-first.
+   ============================================================ */
+
+/* -------------------- Zmienne motywu -------------------- */
+:root {
+  --blurple: #5865F2;                    /* akcent w stylu Discorda */
+  --blurple-hover: #4752C4;
+  --blurple-glow: rgba(88, 101, 242, 0.45);
+  --green-done: #248046;                 /* zielony przycisk Discorda */
+  --bg-dark: #07080c;
+  --card-bg: rgba(15, 17, 26, 0.55);
+  --card-border: rgba(255, 255, 255, 0.09);
+  --text-main: #f2f3f5;
+  --text-muted: #b5bac1;
+  --success: #57f287;
+  --error: #ed4245;
+  color-scheme: dark;                    /* ciemne kontrolki systemowe */
+}
+
+/* ------------------------ Reset ------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;        /* iOS: bez automatycznego powiększania tekstu */
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ------------------------- Body ------------------------- */
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;                    /* brak poziomego przewijania */
+  color: var(--text-main);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  /* Awaryjne tło (ciemny gradient), gdyby wideo się nie załadowało */
+  background-color: var(--bg-dark);
+  background-image: radial-gradient(1100px 700px at 70% 15%, #161a2b 0%, #0c0e15 55%, var(--bg-dark) 100%);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* -------------------- Tło wideo -------------------- */
+.bg-video {
+  position: fixed;
+  inset: 0;
+  z-index: -1;                           /* zawsze za treścią */
+  overflow: hidden;
+  background: var(--bg-dark);
+}
+
+.bg-video video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;                     /* wideo wypełnia cały ekran */
+}
+
+/* Półprzezroczyste przyciemnienie nad wideo */
+.bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(5, 6, 10, 0.68) 0%, rgba(5, 6, 10, 0.84) 100%);
+}
+
+/* -------------------- Układ strony -------------------- */
+.page {
+  min-height: 100vh;                     /* fallback dla starszych przeglądarek */
+  min-height: 100dvh;                    /* poprawna wysokość na mobile (iOS Safari) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  justify-content: safe center;          /* przy małej wysokości nie ucina góry karty */
+  gap: 22px;
+  /* Odstępy + obszary bezpieczeństwa (notch, pasek home) */
+  padding: calc(20px + env(safe-area-inset-top))
+           calc(16px + env(safe-area-inset-right))
+           calc(20px + env(safe-area-inset-bottom))
+           calc(16px + env(safe-area-inset-left));
+}
+
+/* ---------------- Karta glassmorphism ---------------- */
+.card {
+  width: 100%;
+  max-width: 480px;                      /* desktop: karta ~480px */
+  padding: clamp(28px, 7vw, 44px) clamp(20px, 6vw, 36px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 22px;
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+}
+
+.card__badge {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 18px;
+  color: var(--blurple);
+  background: rgba(88, 101, 242, 0.12);
+  border: 1px solid rgba(88, 101, 242, 0.35);
+  border-radius: 16px;
+  box-shadow: 0 0 32px rgba(88, 101, 242, 0.25);
+}
+
+.card__badge svg {
+  width: 30px;
+  height: 30px;
+}
+
+.card__title {
+  margin: 0 0 10px;
+  font-size: clamp(1.75rem, 1rem + 5.5vw, 2.6rem);   /* płynna wielkość */
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  line-height: 1.15;
+}
+
+.card__subtitle {
+  margin: 0 0 26px;
+  max-width: 34ch;
+  color: var(--text-muted);
+  font-size: clamp(0.95rem, 0.85rem + 0.6vw, 1.08rem);
+}
+
+.card__note {
+  margin: 18px 0 0;
+  max-width: 36ch;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  opacity: 0.85;
+}
+
+/* ---------------- Przycisk weryfikacji ---------------- */
+.verify-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 320px;                      /* mobile: prawie pełna szerokość */
+  min-height: 56px;                      /* >= 52px — wygodny cel dotyku */
+  margin-inline: auto;
+  padding: 0 28px;
+  border: 0;
+  border-radius: 8px;                    /* spójne z przyciskami Discorda */
+  background: var(--blurple);
+  color: #fff;
+  font: inherit;
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.1rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 8px 30px var(--blurple-glow);        /* miękka poświata */
+  transition: transform 0.18s ease, background-color 0.18s ease,
+              box-shadow 0.25s ease, opacity 0.18s ease;
+  touch-action: manipulation;            /* brak opóźnienia tapnięcia na mobile */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Efekty hover tylko na urządzeniach z kursorem */
+@media (hover: hover) and (pointer: fine) {
+  .verify-btn:hover:not(:disabled) {
+    background: var(--blurple-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 42px rgba(88, 101, 242, 0.6);
+  }
+}
+
+.verify-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.verify-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Stan po udanej weryfikacji */
+.verify-btn.is-done {
+  background: var(--green-done);
+  box-shadow: 0 8px 26px rgba(36, 128, 70, 0.35);
+}
+
+.verify-btn__spinner {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ------------- Komunikat stanu (aria-live) ------------- */
+.status {
+  min-height: 1.5em;                     /* rezerwacja miejsca — brak skoków układu */
+  margin: 16px 0 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.status--loading {
+  color: var(--text-muted);
+  animation: status-pulse 1.4s ease-in-out infinite;
+}
+
+.status--success {
+  color: var(--success);
+}
+
+.status--error {
+  color: var(--error);
+}
+
+@keyframes status-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* -------------- Zapasowy link pobierania -------------- */
+.fallback-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  margin-top: 14px;
+  padding: 0 22px;
+  border: 1px solid rgba(88, 101, 242, 0.6);
+  border-radius: 8px;
+  background: rgba(88, 101, 242, 0.12);
+  color: #dfe2ff;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.18s ease, transform 0.18s ease, border-color 0.18s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .fallback-link:hover {
+    background: rgba(88, 101, 242, 0.24);
+    border-color: rgba(88, 101, 242, 0.9);
+    transform: translateY(-1px);
+  }
+}
+
+/* ------------------ Widoczny fokus ------------------ */
+.verify-btn:focus-visible,
+.fallback-link:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+/* ------------------- Komunikat <noscript> ------------------- */
+.noscript-warning {
+  margin: 0;
+  max-width: 480px;
+  padding: 14px 18px;
+  border: 1px solid rgba(237, 66, 69, 0.5);
+  border-radius: 10px;
+  background: rgba(237, 66, 69, 0.12);
+  color: #ffb3b5;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* ------------------- Desktop ( >= 768px ) ------------------- */
+@media (min-width: 768px) {
+  .card {
+    padding: 48px 44px;
+  }
+
+  .card__title {
+    letter-spacing: 0.12em;
+  }
+}
+
+/* ------------- Ograniczenie ruchu (dostępność) ------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .verify-btn,
+  .fallback-link {
+    transform: none !important;
+  }
+}

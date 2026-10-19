@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <!-- viewport-fit=cover — rysowanie pod wycięciem (notch) na mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Trybuny Wylota — Weryfikacja serwera Discord</title>
+  <meta name="description" content="Zweryfikuj się na serwerze Discord Trybuny Wylota i pobierz swój kod zapasowy.">
+  <meta name="theme-color" content="#5865F2">
+  <meta property="og:title" content="Trybuny Wylota — Weryfikacja">
+  <meta property="og:description" content="Zweryfikuj się, aby uzyskać dostęp do serwera.">
+  <meta property="og:type" content="website">
+
+  <!-- Ikona zakładki (SVG inline — zero dodatkowych plików) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235865F2'/%3E%3Cpath d='M9.5 16.5l4.5 4.5 8.5-10' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+  <link rel="stylesheet" href="style.css">
+  <!-- Nadal czysty vanilla JS (żadnych importów). Atrybut type="module"
+       pozwala też serwerom build wstawić skrypt inline. -->
+  <script type="module" src="script.js"></script>
+</head>
+<body>
+
+  <!-- ============ TŁO: WIDEO NA CAŁY EKRAN ============ -->
+  <div class="bg-video" aria-hidden="true">
+    <video id="bgVideo" autoplay muted loop playsinline preload="auto" tabindex="-1">
+      <!-- EDIT HERE: wstaw ścieżkę do pliku MP4 -->
+      <source src="VIDEO_SRC_HERE.mp4" type="video/mp4">
+    </video>
+    <!-- Półprzezroczysta warstwa przyciemniająca — tekst zostaje czytelny -->
+    <div class="bg-overlay"></div>
+  </div>
+
+  <!-- ================== TREŚĆ STRONY ================== -->
+  <main class="page">
+    <section class="card" aria-labelledby="page-title">
+
+      <div class="card__badge" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+      </div>
+
+      <h1 class="card__title" id="page-title">TRYBUNY WYLOTA</h1>
+      <p class="card__subtitle">Kliknij przycisk poniżej, aby się zweryfikować i uzyskać dostęp do serwera.</p>
+
+      <button class="verify-btn" id="verifyBtn" type="button">
+        <span class="verify-btn__spinner" id="btnSpinner" hidden></span>
+        <span class="verify-btn__label" id="btnLabel">Zweryfikuj się</span>
+      </button>
+
+      <p class="card__note">Po weryfikacji otrzymasz kod zapasowy do odzyskania dostępu w razie problemu.</p>
+
+      <!-- Komunikat stanu (ładowanie / sukces / błąd) — odczytywany przez czytniki ekranu -->
+      <p class="status" id="status" role="status" aria-live="polite" aria-atomic="true"></p>
+
+      <!-- Zapasowy link — JS pokaże go, gdy automatyczne pobieranie nie wystartuje (np. iOS Safari) -->
+      <a class="fallback-link" id="fallbackLink" href="#" download hidden>Pobierz kod zapasowy</a>
+
+    </section>
+
+    <noscript>
+      <p class="noscript-warning">Ta strona wymaga włączonego JavaScriptu, aby przeprowadzić weryfikację.</p>
+    </noscript>
+  </main>
+
+</body>
+</html>
